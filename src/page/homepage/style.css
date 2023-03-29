@@ -1,0 +1,24 @@
+.slick-arrow::before , .slick-next::before {
+    display: none !important;
+}
+.slick-prev, .slick-next {
+    width: 50px !important;
+    height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important; 
+}
+.next-arrow , .prev-arrow{
+    background: #fff !important;
+    border: 2px solid #d7d7d7 !important;
+    border-radius: 4px !important;
+}
+.text-carousel{
+    color: #000;
+    z-index: 10000;
+    opacity: 0.5 !important;
+}
+.text-carousel:hover{
+    opacity: 1 !important;
+}

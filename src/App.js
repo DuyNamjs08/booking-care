@@ -6,7 +6,7 @@ import Pages from './page'
 
 function App() {
   const token = localStorage.getItem("token")
-  const AuthAccount = ({children}) => {
+  const AuthAccount = ({ children }) => {
     return !token ? children : <Navigate to='/login' />
   }
   return (
@@ -15,9 +15,19 @@ function App() {
         <Route path="register" element={<Pages.Register />} />
         <Route path="login" element={<Pages.Login />} />
         {
-          RouterWeb.map(item => (
-            <Route key={item.id} path={item.path} element={<AuthAccount><Layout>{item.component} </Layout> </AuthAccount>} />
-          ))
+          RouterWeb.map(item => {
+            if (!item.child) {
+              return (
+                <Route key={item.id} path={item.path} element={<AuthAccount><Layout>{item.component} </Layout> </AuthAccount>} />
+              )
+            } else {
+              return <Route key={item.id} path={item.path} element={<AuthAccount><Layout>{item.component} </Layout> </AuthAccount>} >
+                {item.child.map((child, index) => {
+                  return <Route exact path={child.path} key={index} element={child.component} />;
+                })}
+              </Route>
+            }
+          })
         }
         <Route path="*" element={<Pages.Notfound />} />
       </Routes>

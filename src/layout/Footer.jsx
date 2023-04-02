@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import logo from "../assets/logo.svg";
+import logo from "../assets/full-logo.png";
 import logo1 from "../assets/bocongthuong.svg";
 import facebook from "../assets/facebook.svg";
 import youtube from "../assets/youtube.svg";
@@ -41,9 +41,10 @@ const StyleImg1 = styled.img.attrs({
   width: 78px;
   object-fit: contain;
 `;
-const StyleLink = styled.div`
+const StyleLink = styled.a`
   color: #45c3d2;
   cursor: pointer;
+  text-decoration: none;
 `;
 const StyleFooter2 = styled.div`
   display: flex;
@@ -80,7 +81,7 @@ function Footer(props) {
         <StyleFooter className="container">
           <StyleFooterItem2>
             <StyleImg src="" alt="" />
-            <h6>Công ty Cổ phần Công nghệ BookingCare</h6>
+            <h6>Công ty Cổ phần Công nghệ Med247</h6>
             <p className="m-0">
               <FiMapPin /> Tầng 6, Tòa nhà D'Office, tổ 28, P. Dịch Vọng, Q. Cầu
               Giấy, Tp. Hà Nội
@@ -95,13 +96,27 @@ function Footer(props) {
             </div>
           </StyleFooterItem2>
           <StyleFooterItem1>
-            <StyleLink>Liên hệ hợp tác</StyleLink>
-            <StyleLink>Gói chuyển đổi số doanh nghiệp</StyleLink>
-            <StyleLink>Tuyển dụng</StyleLink>
-            <StyleLink>Câu hỏi thường gặp</StyleLink>
-            <StyleLink>Điều khoản sử dụng</StyleLink>
-            <StyleLink>Quy trình hỗ trợ giải quyết khiếu nại</StyleLink>
-            <StyleLink>Quy chế hoạt động</StyleLink>
+            <StyleLink href="https://bookingcare.vn/hop-tac-voi-bookingcare">
+              Liên hệ hợp tác
+            </StyleLink>
+            <StyleLink href="https://bookingcare.vn/hop-tac-voi-bookingcare">
+              Gói chuyển đổi số doanh nghiệp
+            </StyleLink>
+            <StyleLink href="https://bookingcare.vn/hop-tac-voi-bookingcare">
+              Tuyển dụng
+            </StyleLink>
+            <StyleLink href="https://bookingcare.vn/hop-tac-voi-bookingcare">
+              Câu hỏi thường gặp
+            </StyleLink>
+            <StyleLink href="https://bookingcare.vn/hop-tac-voi-bookingcare">
+              Điều khoản sử dụng
+            </StyleLink>
+            <StyleLink href="https://bookingcare.vn/hop-tac-voi-bookingcare">
+              Quy trình hỗ trợ giải quyết khiếu nại
+            </StyleLink>
+            <StyleLink href="https://bookingcare.vn/hop-tac-voi-bookingcare">
+              Quy chế hoạt động
+            </StyleLink>
           </StyleFooterItem1>
           <StyleFooterItem1>
             <div className="mb-3">
@@ -130,7 +145,7 @@ function Footer(props) {
       </Container>
       <Container2>
         <StyleFooter3 className="container">
-          <div>© 2023 BookingCare.</div>
+          <div>© 2023 Med247</div>
           <StyleIcon>
             <ImgIcon1 />
             <ImgIcon2 />

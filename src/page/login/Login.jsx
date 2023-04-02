@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import {useDispatch} from 'react-redux'
+import { FetchLogin } from "../../redux/authSlice";
 
 const StyleContainer = styled.div`
   height: 100vh;
@@ -24,10 +26,16 @@ const StyleLink = styled.div`
   }
 `;
 function Login(props) {
+  const dispatch = useDispatch()
+  const handleLogin = (e) => {
+    e.preventDefault()
+    dispatch(FetchLogin("hello"))
+  }
+  
   return (
     <StyleContainer>
       <StyleOutLine>1</StyleOutLine>
-      <StyleForm>
+      <StyleForm onSubmit={handleLogin}>
         <h1 className="h3 mb-3 font-weight-normal text-center">Sign in</h1>
         <label className="sr-only">Email address</label>
         <input

@@ -1,7 +1,6 @@
 import React from "react";
-import { FiAlignJustify } from "react-icons/fi";
 import { FcHeadset } from "react-icons/fc";
-import logo from "../assets/logo.svg";
+import logo from "../assets/full-logo.png";
 import styled from "styled-components";
 import { headerData } from "../constant";
 import { Link } from "react-router-dom";
@@ -48,9 +47,6 @@ function Header(props) {
   return (
     <StyleHeader className="container d-flex gap-3">
       <div className="d-flex gap-3 align-items-center">
-        <StyleIcon>
-          <FiAlignJustify />
-        </StyleIcon>
         <Link to='/'>
           <StyleImg src={logo} alt="" />
         </Link>

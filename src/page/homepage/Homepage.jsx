@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import background from "../../assets/bookingcare.jpg";
+import background from "../../assets/chamsoctuxa.jpg";
 import appstore from "../../assets/appp.svg";
 import googleplay from "../../assets/gg.png";
 import "./style.css";
@@ -14,6 +14,7 @@ import {
 import Carousel from "../../components/carousel/Carousel";
 import Ifame from "../../components/iframe/Ifame";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import Loading from "../loading/Loading";
 
 const Container = styled.div`
   background-image: url(${background});
@@ -92,6 +93,12 @@ const StyleDiv = styled.div`
   align-items: center;
   background: #fff;
   margin: 0 auto;
+  transition: all ease-in-out 200ms;
+  &:hover {
+    background: #ebb02d;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+      rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  }
 `;
 const StyleListHomepage = styled.ul`
   display: flex;
@@ -138,6 +145,7 @@ function Homepage(props) {
   return (
     <>
       <Container>
+        {/* <Loading /> */}
         <StyleBanner>
           <StyleTitle>Nền tảng y tế </StyleTitle>
           <StyleTitle>chăm sóc sức khỏe toàn diện</StyleTitle>
@@ -165,7 +173,7 @@ function Homepage(props) {
       </Container>
       <div className="container">
         <Carousel
-          width={"18rem"}
+          width={"21rem"}
           data={dataBanner}
           iconCarousel={<FiChevronRight />}
           options={settings}

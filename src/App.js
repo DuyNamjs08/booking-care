@@ -4,10 +4,12 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Pages from './page'
 
 
+
 function App() {
   const token = localStorage.getItem("token")
+  const role = localStorage.getItem("role")
   const AuthAccount = ({ children }) => {
-    return !token ? children : <Navigate to='/login' />
+    return token ? children : <Navigate to='/login' />
   }
   return (
     <>
@@ -16,11 +18,11 @@ function App() {
         <Route path="login" element={<Pages.Login />} />
         {
           RouterWeb.map(item => {
-            if (!item.child) {
+            if (!item.child &&  item.role.includes(role)) {
               return (
                 <Route key={item.id} path={item.path} element={<AuthAccount><Layout>{item.component} </Layout> </AuthAccount>} />
               )
-            } else {
+            } else if(item.child && item.role.includes(role)) {
               return <Route key={item.id} path={item.path} element={<AuthAccount><Layout>{item.component} </Layout> </AuthAccount>} >
                 {item.child.map((child, index) => {
                   return <Route exact path={child.path} key={index} element={child.component} />;

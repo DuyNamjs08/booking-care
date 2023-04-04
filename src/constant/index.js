@@ -29,10 +29,10 @@ import dashboard3 from '../assets/dashboard/3.png'
 import dashboard4 from '../assets/dashboard/4.png'
 import dashboard5 from '../assets/dashboard/5.png'
 export const headerData = [
-    { id: 1, title: " Chuyên khoa", text: 'Tìm bác sĩ theo chuyên khoa'  , path:'/chuyen-khoa'},
-    { id: 2, title: " Cơ sở y tế", text: 'Danh sách bệnh nhân'  , path:'/co-so-y-te'},
-    { id: 3, title: " Bác sĩ", text: 'Chọn bác sĩ giỏi'  , path:'/bac-sy'},
-    { id: 4, title: " Gói khám", text: 'Khám sức khỏe tổng quát'  , path:'/goi-kham'},
+    { id: 1, title: " Chuyên khoa", text: 'Tìm bác sĩ theo chuyên khoa'  , path:'/chuyen-khoa' , role:['1','2','3']},
+    { id: 2, title: " Đơn thuốc", text: 'Danh sách đơn thuốc'  , path:'/don-thuoc' , role:['1','2','3']},
+    { id: 3, title: " Bác sĩ", text: 'Chọn bác sĩ giỏi'  , path:'/bac-sy' , role:['1',]},
+    { id: 4, title: " Gói khám", text: 'Khám sức khỏe tổng quát'  , path:'/goi-kham' , role:['1','2',]},
 ]
 
 export const dataHomepage = [

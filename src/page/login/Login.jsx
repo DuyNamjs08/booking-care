@@ -1,8 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import {useDispatch} from 'react-redux'
+import { useDispatch } from "react-redux";
 import { FetchLogin } from "../../redux/authSlice";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 const StyleContainer = styled.div`
   height: 100vh;
@@ -26,34 +30,57 @@ const StyleLink = styled.div`
   }
 `;
 function Login(props) {
-  const dispatch = useDispatch()
-  const handleLogin = (e) => {
-    e.preventDefault()
-    dispatch(FetchLogin("hello"))
-  }
-  
+  const navigate = useNavigate();
+  const schema = yup.object().shape({
+    username: yup.string().required(),
+    password: yup.string().min(6).max(32).required(),
+  });
+  const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const onSubmitHandler = async (data) => {
+    console.log("data", { data });
+    await dispatch(FetchLogin(data)).then((res) => {
+      console.log(res)
+      if (!res.payload?.status) {
+        localStorage.setItem("token", res?.payload?.accessToken);
+        localStorage.setItem("role", JSON.stringify(res?.payload?.user?.roleid));
+        navigate("/");
+      } else {
+        alert(res.payload?.msg ," !");
+      }
+    });
+    reset();
+  };
+
+
   return (
     <StyleContainer>
       <StyleOutLine>1</StyleOutLine>
-      <StyleForm onSubmit={handleLogin}>
+      <StyleForm onSubmit={handleSubmit(onSubmitHandler)}>
         <h1 className="h3 mb-3 font-weight-normal text-center">Sign in</h1>
-        <label className="sr-only">Email address</label>
+        <label className="sr-only">Username</label>
         <input
-          type="email"
-          id="inputEmail"
-          className="form-control"
-          placeholder="Email address"
+          {...register("username")}
+          placeholder="username"
+          type="text"
           required
-          autofocus
         />
+        <p style={{ color: "red" }}>{errors.email?.message}</p>
         <label className="sr-only">Password</label>
         <input
+          {...register("password")}
+          placeholder="password"
           type="password"
-          id="inputPassword"
-          className="form-control"
-          placeholder="Password"
           required
         />
+        <p style={{ color: "red" }}>{errors.password?.message}</p>
         <div className="checkbox my-3">
           <label>
             <input type="checkbox" value="remember-me" /> Remember me

@@ -1,5 +1,11 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useDispatch } from "react-redux";
+import { FetchRegister } from "../../redux/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const StyleContainer = styled.div`
   height: 100vh;
@@ -23,54 +29,75 @@ const StyleLink = styled.div`
   }
 `;
 function Register(props) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const schema = yup.object().shape({
+    username: yup.string().required(),
+    email: yup.string().email().required(),
+    password: yup.string().min(6).max(32).required(),
+    repassword: yup
+      .string()
+      .oneOf([yup.ref("password"), null], "Passwords must match"),
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const onSubmitHandler = async(data) => {
+    console.log({ data });
+    await dispatch(FetchRegister(data)).then((res) => {
+      console.log(res)
+      if (res?.payload) {
+        setTimeout(() => {
+          navigate("/login");
+        }, 300);
+      } else {
+        alert("Tài khoản đã tồn tại");
+      }
+    });
+    reset();
+  };
   return (
     <StyleContainer>
       <StyleOutLine>1</StyleOutLine>
-      <StyleForm>
+      <StyleForm onSubmit={handleSubmit(onSubmitHandler)}>
         <h1 className="h3 mb-3 font-weight-normal text-center"> Sign up</h1>
+        <label className="sr-only">Username</label>
+        <input
+          {...register("username")}
+          placeholder="Username"
+          type="text"
+          required
+        />
+        <p style={{ color: "red" }}>{errors.username?.message}</p>
         <label className="sr-only">Email</label>
         <input
-          type="text"
-          id="usename"
-          className="form-control"
-          placeholder="UserName"
-          required
-          autofocus
-        />
-        <label className="sr-only">SDT</label>
-        <input
-          type="text"
-          id="sdt"
-          className="form-control"
-          placeholder="SDT"
-          required
-          autofocus
-        />
-        <label className="sr-only">Email</label>
-        <input
-          type="email"
-          id="email"
-          className="form-control"
+          {...register("email")}
           placeholder="Email"
+          type="email"
           required
-          autofocus
         />
+        <p style={{ color: "red" }}>{errors.email?.message}</p>
         <label className="sr-only">Password</label>
         <input
-          type="password"
-          id="inputPassword"
-          className="form-control"
+          {...register("password")}
           placeholder="Password"
+          type="password"
           required
         />
+        <p style={{ color: "red" }}>{errors.password?.message}</p>
         <label className="sr-only">Re-password</label>
         <input
+          {...register("repassword")}
+          placeholder="Re-password"
           type="password"
-          id="repassword"
-          className="form-control"
-          placeholder="Re-Password"
           required
         />
+        <p style={{ color: "red" }}>{errors.repassword?.message}</p>
         <button className="btn btn-lg btn-primary btn-block mt-2" type="submit">
           Sign up
         </button>

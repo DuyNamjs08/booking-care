@@ -44,6 +44,7 @@ const StyleLink = styled.div`
   }
 `;
 function Header(props) {
+  const role = localStorage.getItem("role")
   return (
     <StyleHeader className="container d-flex gap-3">
       <div className="d-flex gap-3 align-items-center">
@@ -53,14 +54,16 @@ function Header(props) {
       </div>
       <div className="d-flex gap-3 align-items-center">
         {headerData.map((item) => {
-          return (
-            <StyleLink key={item.id} className="link">
-              <Link to={item.path}>
-                <StyleTitle>{item.title}</StyleTitle>
-                <StyleText>{item.text}</StyleText>
-              </Link>
-            </StyleLink>
-          );
+          if(item.role.includes(role)){
+            return (
+              <StyleLink key={item.id} className="link">
+                <Link to={item.path}>
+                  <StyleTitle>{item.title}</StyleTitle>
+                  <StyleText>{item.text}</StyleText>
+                </Link>
+              </StyleLink>
+            );
+          }
         })}
       </div>
       <div className="d-flex align-items-center gap-1">
@@ -69,7 +72,7 @@ function Header(props) {
         </StyleIcon>
         <StyleSupport className="mb-0 link">
           <StyleLink>
-            <Link to="/ho-tro">Hỗ trợ</Link>
+            <Link to="/benh-nhan">Bệnh nhân</Link>
           </StyleLink>
         </StyleSupport>
       </div>

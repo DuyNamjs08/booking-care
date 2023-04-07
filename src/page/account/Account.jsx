@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 
-function Doctor(props) {
+function Account(props) {
   return (
     <div>
       <Outlet />
@@ -9,4 +9,4 @@ function Doctor(props) {
   );
 }
 
-export default Doctor;
+export default Account;

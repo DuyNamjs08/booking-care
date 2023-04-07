@@ -1,12 +1,69 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
 
-function CustomGrid(props) {
+function CustomGrid({ data, handleDelete ,path }) {
+  const columns = [
+    { field: "id", headerName: "ID", width: 90, align: "center" },
+    {
+      field: "username",
+      headerName: "Họ Tên",
+      width: 150,
+      editable: true,
+      headerAlign: "center",
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      width: 160,
+      editable: true,
+      headerAlign: "center",
+    },
+    {
+      field: "createdAt",
+      headerName: "Ngày đăng kí",
+      width: 160,
+      editable: true,
+      headerAlign: "center",
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 300,
+      editable: true,
+      headerAlign: "center",
+      renderCell: (row) => {
+        return (
+          <div style={{ display: "flex", gap: "10px" }}>
+            <Link to={`${path}${row.row._id}`}>
+              <button className="btn btn-primary">View</button>
+            </Link>
+            <button
+              onClick={() => handleDelete(row.row._id)}
+              className="btn btn-danger"
+            >
+              Delete
+            </button>
+          </div>
+        );
+      },
+    },
+  ];
+  const [newRows, setNewRows] = useState([]);
+  useEffect(() => {
+    if (data.length > 0) {
+      let arr = [];
+      arr = data.map((item, index) => {
+        return { ...item, id: index + 1 };
+      });
+      setNewRows(arr);
+    }
+  }, [data]);
   return (
     <Box sx={{ height: 400, width: "100%" }}>
       <DataGrid
-        rows={rows}
+        rows={newRows.length > 0 ? newRows : []}
         columns={columns}
         initialState={{
           pagination: {
@@ -22,59 +79,6 @@ function CustomGrid(props) {
     </Box>
   );
 }
-const columns = [
-  { field: "id", headerName: "ID", width: 90 },
-  {
-    field: "name",
-    headerName: "Họ Tên",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "age",
-    headerName: "Tuổi",
-    type: "number",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "email",
-    headerName: "Email",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "department",
-    headerName: "Khoa",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "fromdate",
-    headerName: "Ngày vào",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "enddate",
-    headerName: "Ngày Ra",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "action",
-    headerName: "Action",
-    width: 160,
-    editable: true,
-    renderCell: (row) => {
-      return (
-        <div>
-          <button className="btn btn-primary">Xem chi tiết</button>
-        </div>
-      );
-    },
-  },
-];
 
 const rows = [
   { id: 1, name: "Snow", age: 35 },

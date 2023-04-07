@@ -5,7 +5,7 @@ function HealthFacilities(props) {
       
       <div className="container">
         <h4 className="my-4">Danh sách bệnh nhân</h4>
-        <CustomGrid />
+        {/* <CustomGrid /> */}
       </div>
   );
 }

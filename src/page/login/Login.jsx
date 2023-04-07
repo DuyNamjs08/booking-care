@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const StyleContainer = styled.div`
   height: 100vh;
@@ -47,18 +48,21 @@ function Login(props) {
   const onSubmitHandler = async (data) => {
     console.log("data", { data });
     await dispatch(FetchLogin(data)).then((res) => {
-      console.log(res)
+      console.log(res);
       if (!res.payload?.status) {
         localStorage.setItem("token", res?.payload?.accessToken);
-        localStorage.setItem("role", JSON.stringify(res?.payload?.user?.roleid));
+        localStorage.setItem(
+          "role",
+          JSON.stringify(res?.payload?.user?.roleid)
+        );
+        toast.success("Đăng nhập thành công!");
         navigate("/");
       } else {
-        alert(res.payload?.msg ," !");
+        toast.error(res.payload?.msg, " !");
       }
     });
     reset();
   };
-
 
   return (
     <StyleContainer>
@@ -72,7 +76,7 @@ function Login(props) {
           type="text"
           required
         />
-        <p style={{ color: "red" }}>{errors.email?.message}</p>
+        <p style={{ color: "red" }}>{errors.username?.message}</p>
         <label className="sr-only">Password</label>
         <input
           {...register("password")}

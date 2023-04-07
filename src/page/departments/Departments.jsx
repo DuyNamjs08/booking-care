@@ -5,6 +5,13 @@ import Card from "../../components/card/Card";
 import { dataDepartment, dataBreadCrumbs } from "../../constant";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { FetchDataService } from "../../redux/authSlice";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import { AddService, DeleteService } from "../../redux/authSlice";
+import Loading from "../loading/Loading";
 
 const StyleGrid = styled.div`
   display: grid;
@@ -30,9 +37,61 @@ const StyleSearch = styled.div`
 `;
 
 function Departments(props) {
+  const role = localStorage.getItem("role");
   const path = useLocation();
   const [search, setSearch] = useState("");
   const [data, setData] = useState(dataDepartment);
+  const token = localStorage.getItem("token");
+  const [state, setState] = useState(token);
+  const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const [value, setValue] = useState("");
+  const [active, setActive] = useState(false);
+  const GetData = async (value) => {
+    try {
+      await dispatch(FetchDataService(value))
+        .unwrap()
+        .then((res) => {
+          const newData = res.map((item, index) => {
+            return { ...item, ...dataDepartment[index] };
+          });
+          setData(newData);
+        });
+    } catch (error) {
+      toast.error("có lỗi xảy ra ");
+    }
+  };
+
+  useEffect(() => {
+    window.scroll(0, 0);
+    if (token) {
+      GetData(token);
+      setState(token);
+    }
+  }, [token, active]);
+  const handleClick = () => {
+    setEdit(!edit);
+  };
+  const handleSubmit = async () => {
+    setLoading(true);
+    setEdit(!edit);
+    try {
+      await dispatch(
+        AddService({
+          value,
+          token,
+        })
+      ).then((res) => {
+        setLoading(false);
+        setValue("");
+        setActive(!active);
+      });
+    } catch (error) {
+      setLoading(false);
+      setActive(!active);
+    }
+  };
   const typingRef = useRef(null);
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -45,13 +104,13 @@ function Departments(props) {
     }, 300);
   };
   const handleFilter = (value) => {
-    if(value){
+    if (value) {
       const newData = [...data].filter((item) =>
         item.title.toLocaleLowerCase().includes(value)
       );
       setData(newData);
-    }else{
-      setData(dataDepartment)
+    } else {
+      setData(dataDepartment);
     }
   };
 
@@ -60,6 +119,34 @@ function Departments(props) {
       return dataBreadCrumbs.find((item) => item.path === path.pathname).title;
     } else {
       return "sai";
+    }
+  };
+
+  const handleChooseService = () => {
+    if (!state) {
+      toast.warning("Bạn cần đăng nhập để đăng kí dịch vụ của chúng tôi !");
+    }
+  };
+  if (loading) {
+    return <Loading />;
+  }
+  const hanldeDelete = async (url) => {
+    console.log("url", url);
+    setLoading(true);
+    setEdit(!edit);
+    try {
+      await dispatch(
+        DeleteService({
+          url,
+          token,
+        })
+      ).then((res) => {
+        setLoading(false);
+        setActive(!active);
+      });
+    } catch (error) {
+      setLoading(false);
+      setActive(!active);
     }
   };
 
@@ -75,17 +162,51 @@ function Departments(props) {
           value={search}
         />
       </StyleSearch>
+      {role === "1" || "2" ? (
+        !edit ? (
+          <Button className="my-3" variant="contained" onClick={handleClick}>
+            Thêm dịch vụ
+          </Button>
+        ) : (
+          <Button className="my-3" variant="contained" onClick={handleSubmit}>
+            submit
+          </Button>
+        )
+      ) : (
+        ""
+      )}
+      {edit ? (
+        <div className="mb-4">
+          <TextField
+            id="outlined-basic"
+            label="Edit Name"
+            variant="outlined"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+        </div>
+      ) : null}
       <StyleGrid>
-        {data.map((item) => (
-          <div key={item.id} style={{ cursor: "pointer" }}>
-            <Card
-              img={item.img}
-              title={item.title}
-              width={240}
-              link={item.path}
-            />
-          </div>
-        ))}
+        {data
+          ? data.map((item) => (
+              <div
+                onClick={handleChooseService}
+                key={item.id}
+                style={{ cursor: "pointer", margin: "20px 0" }}
+              >
+                <Card
+                  img={item.img}
+                  title={item.name}
+                  width={240}
+                  // link={item.path}
+                  role={role}
+                  link={item._id}
+                  token={state}
+                  hanldeDelete={hanldeDelete}
+                />
+              </div>
+            ))
+          : ""}
       </StyleGrid>
     </div>
   );

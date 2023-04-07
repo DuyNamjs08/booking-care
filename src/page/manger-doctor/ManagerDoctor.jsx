@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CustomGrid from "../../components/grid/CustomGrid";
-import { GetAccount, AddAcoust, DeleteAccount } from "../../redux/authSlice";
+import { GetDoctors, AddDoctor, DeleteDoctor } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-function ExaminationPackage(props) {
+function ManagerDoctor(props) {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const role = localStorage.getItem("role");
@@ -21,9 +21,11 @@ function ExaminationPackage(props) {
   const [active, setActive] = useState(false);
   const dispatch = useDispatch();
   const schema = yup.object().shape({
-    username: yup.string().required(),
+    fullname: yup.string().required(),
     email: yup.string().email().required(),
-    password: yup.string().min(6).max(32).required(),
+    address: yup.string().required(),
+    phone: yup.string().min(9).max(10).required(),
+    position: yup.string().min(3).max(32).required(),
   });
   const {
     register,
@@ -36,7 +38,7 @@ function ExaminationPackage(props) {
   const GetData = async (value) => {
     setLoading(true);
     try {
-      await dispatch(GetAccount(value))
+      await dispatch(GetDoctors(value))
         .unwrap()
         .then((res) => {
           //   console.log("ress..////", res);
@@ -57,17 +59,20 @@ function ExaminationPackage(props) {
     setEdit(!edit);
   };
   const onSubmitHandler = async (data) => {
+    console.log("data", data);
     setEdit(!edit);
     setLoading(true);
     try {
       await dispatch(
-        AddAcoust({
+        AddDoctor({
           token,
           ...data,
         })
       ).then((res) => {
+        console.log(res)
         if (!res.payload) {
           toast.warning("email đã tồn tại");
+          setLoading(false);
           return;
         }
         setLoading(false);
@@ -83,7 +88,7 @@ function ExaminationPackage(props) {
     setLoading(true);
     try {
       await dispatch(
-        DeleteAccount({
+        DeleteDoctor({
           token,
           url,
         })
@@ -102,11 +107,11 @@ function ExaminationPackage(props) {
   }
   return (
     <div className="container">
-      <h4 className="my-4">Danh sách Tài khoản</h4>
+      <h4 className="my-4">Danh sách Bác sỹ</h4>
       {role === "1" || "2" ? (
         !edit ? (
           <Button className="my-3" variant="contained" onClick={handleClick}>
-            Thêm tài khoản
+            Thêm tài khoản Bác sỹ
           </Button>
         ) : //   <Button className="my-3" variant="contained" onClick={handleSubmit}>
         //     submit
@@ -118,14 +123,15 @@ function ExaminationPackage(props) {
       {edit ? (
         <div>
           <StyleForm onSubmit={handleSubmit(onSubmitHandler)}>
-            <label className="sr-only">Username</label>
+            <label className="sr-only">Full Name</label>
             <input
-              {...register("username")}
-              placeholder="username"
+              {...register("fullname")}
+              placeholder="Full name"
               type="text"
               required
             />
-            <p style={{ color: "red" }}>{errors.username?.message}</p>
+            <p style={{ color: "red" }}>{errors.fullname?.message}</p>
+            <label className="sr-only">Email</label>
             <input
               {...register("email")}
               placeholder="Email"
@@ -133,14 +139,30 @@ function ExaminationPackage(props) {
               required
             />
             <p style={{ color: "red" }}>{errors.email?.message}</p>
-            <label className="sr-only">Password</label>
+            <label className="sr-only">Address</label>
             <input
-              {...register("password")}
-              placeholder="password"
-              type="password"
+              {...register("address")}
+              placeholder="Address"
+              type="text"
               required
             />
-            <p style={{ color: "red" }}>{errors.password?.message}</p>
+            <p style={{ color: "red" }}>{errors.address?.message}</p>
+            <label className="sr-only">Phone</label>
+            <input
+              {...register("phone")}
+              placeholder="Phone"
+              type="text"
+              required
+            />
+            <p style={{ color: "red" }}>{errors.phone?.message}</p>
+            <label className="sr-only">Position</label>
+            <input
+              {...register("position")}
+              placeholder="Position"
+              type="text"
+              required
+            />
+            <p style={{ color: "red" }}>{errors.position?.message}</p>
             <button className="btn btn-lg btn-primary btn-block" type="submit">
               Submit
             </button>
@@ -149,7 +171,7 @@ function ExaminationPackage(props) {
       ) : (
         ""
       )}
-      <CustomGrid data={data} handleDelete={handleDelete} path={'/tai-khoan/'} />
+      <CustomGrid data={data} handleDelete={handleDelete} path={'/quan-ly/'} />
     </div>
   );
 }
@@ -165,4 +187,4 @@ const StyleLink = styled.div`
     color: blue;
   }
 `;
-export default ExaminationPackage;
+export default ManagerDoctor;

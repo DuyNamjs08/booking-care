@@ -7,27 +7,30 @@ import youtube from "../assets/youtube.svg";
 import { FiMapPin, FiCheck, FiSmartphone } from "react-icons/fi";
 
 const Container = styled.div`
-  background: #efefef;
+  background: #232d42;
 `;
 const Container2 = styled.div`
   background: #64b9e5;
-  color: #fff;
+  color: #fff !important;
 `;
 const StyleFooter = styled.div`
   display: flex;
   padding: 30px 15px 0;
+  color: #fff !important;
 `;
 const StyleFooterItem1 = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 5px;
+  color: #fff !important;
 `;
 const StyleFooterItem2 = styled.div`
   flex: 2;
   display: flex;
   flex-direction: column;
   gap: 5px;
+  color: #fff !important;
 `;
 const StyleImg = styled.img.attrs({
   src: `${logo}`,
@@ -51,6 +54,7 @@ const StyleFooter2 = styled.div`
   align-items: center;
   border-top: 1px solid #ccc;
   padding: 10px 15px 30px;
+  color: #fff !important;
 `;
 const StyleFooter3 = styled.div`
   display: flex;
@@ -140,18 +144,13 @@ function Footer(props) {
         <StyleFooter2 className="container">
           <FiSmartphone /> Tải ứng dụng BookingCare cho điện thoại hoặc máy tính
           bảng:{" "}
-          <StyleLink className="ms-3"> Android-Iphone/ipad-Khác</StyleLink>
-        </StyleFooter2>
-      </Container>
-      <Container2>
-        <StyleFooter3 className="container">
-          <div>© 2023 Med247</div>
+          <StyleLink className="ms-3 mx-3"> Android-Iphone/ipad-Khác</StyleLink>
           <StyleIcon>
             <ImgIcon1 />
             <ImgIcon2 />
           </StyleIcon>
-        </StyleFooter3>
-      </Container2>
+        </StyleFooter2>
+      </Container>
     </>
   );
 }

@@ -15,6 +15,10 @@ import Carousel from "../../components/carousel/Carousel";
 import Ifame from "../../components/iframe/Ifame";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import Loading from "../loading/Loading";
+import Banner from "../../components/banner/Banner";
+import footer1 from "../../assets/footersub.png";
+import footer2 from "../../assets/footer2.png";
+import footer3 from "../../assets/footer3.png";
 
 const Container = styled.div`
   background-image: url(${background});
@@ -144,8 +148,9 @@ function Homepage(props) {
   }, [placer]);
   return (
     <>
-      <Container>
-        {/* <Loading /> */}
+      <Banner />
+      {/* <Container>
+        <Loading />
         <StyleBanner>
           <StyleTitle>Nền tảng y tế </StyleTitle>
           <StyleTitle>chăm sóc sức khỏe toàn diện</StyleTitle>
@@ -170,8 +175,8 @@ function Homepage(props) {
             ))}
           </StyleListHomepage>
         </StyleListContainer>
-      </Container>
-      <div className="container">
+      </Container> */}
+      <div className="container my-5">
         <Carousel
           width={"21rem"}
           data={dataBanner}
@@ -204,7 +209,7 @@ function Homepage(props) {
         </div>
         <div className="container">
           <Carousel
-            width={"15rem"}
+            width={"16rem"}
             data={dataCarousel1}
             iconCarousel={null}
             options={settings1}
@@ -261,9 +266,45 @@ function Homepage(props) {
           </StyleUl>
         </div>
       </div>
+      <StyleSubheader>
+        <div className="footer1">
+          <img src={footer1} alt="" />
+          <h2>Câu lạc bộ khách hàng ưu tiên</h2>
+        </div>
+        <div className="footer2">
+          <img src={footer2} alt="" />
+          <img src={footer3} alt="" />
+        </div>
+      </StyleSubheader>
+      <StyeleDiv></StyeleDiv>
     </>
   );
 }
+const StyeleDiv = styled.div`
+  height: 40px;
+  background-color: #fff;
+`;
+const StyleSubheader = styled.div`
+  background-color: #232d42;
+  border-top-right-radius: 35px;
+  padding: 60px 20px 40px 40px;
+  display: flex;
+  justify-content: space-between;
+  .footer1 {
+    width: 20%;
+    h2 {
+      color: #fff;
+    }
+  }
+  .footer2 {
+    width: 70%;
+    display: flex;
+    gap: 20px;
+    img {
+      border-radius: 20px;
+    }
+  }
+`;
 const settings = {
   dots: false,
   infinite: true,
@@ -277,7 +318,7 @@ const settings1 = {
   className: "center",
   centerMode: true,
   infinite: true,
-  centerPadding: "40px",
+  centerPadding: "10px",
   slidesToShow: 4,
   slidesToScroll: 1,
   speed: 500,

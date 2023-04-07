@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { FetchRegister } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
+import {toast} from 'react-toastify'
 
 const StyleContainer = styled.div`
   height: 100vh;
@@ -34,6 +35,8 @@ function Register(props) {
   const schema = yup.object().shape({
     username: yup.string().required(),
     email: yup.string().email().required(),
+    phone: yup.string().min(9).max(10).required(),
+    address: yup.string(),
     password: yup.string().min(6).max(32).required(),
     repassword: yup
       .string()
@@ -52,11 +55,12 @@ function Register(props) {
     await dispatch(FetchRegister(data)).then((res) => {
       console.log(res)
       if (res?.payload) {
+        toast.success('Đăng kí thành công')
         setTimeout(() => {
           navigate("/login");
         }, 300);
       } else {
-        alert("Tài khoản đã tồn tại");
+        toast.error('Đăng kí thất bại tài khoản đã tồn tại!')
       }
     });
     reset();
@@ -74,6 +78,14 @@ function Register(props) {
           required
         />
         <p style={{ color: "red" }}>{errors.username?.message}</p>
+        <label className="sr-only">Phone</label>
+        <input
+          {...register("phone")}
+          placeholder="Phone"
+          type="number"
+          required
+        />
+         <p style={{ color: "red" }}>{errors.phone?.message}</p>
         <label className="sr-only">Email</label>
         <input
           {...register("email")}
@@ -82,6 +94,14 @@ function Register(props) {
           required
         />
         <p style={{ color: "red" }}>{errors.email?.message}</p>
+        <label className="sr-only">Address</label>
+        <input
+          {...register("address")}
+          placeholder="Address"
+          type="text"
+          required
+        />
+        <p style={{ color: "red" }}>{errors.address?.message}</p>
         <label className="sr-only">Password</label>
         <input
           {...register("password")}

@@ -108,10 +108,14 @@ function ExaminationPackage(props) {
           <Button className="my-3" variant="contained" onClick={handleClick}>
             Thêm tài khoản
           </Button>
-        ) : //   <Button className="my-3" variant="contained" onClick={handleSubmit}>
-        //     submit
-        //   </Button>
-        null
+        ) : <StyleButton>
+        <Button
+          variant="contained"
+          onClick={() => setEdit(!edit)}
+        >
+          Đóng
+        </Button>
+      </StyleButton>
       ) : (
         ""
       )}
@@ -164,5 +168,10 @@ const StyleLink = styled.div`
   &:hover {
     color: blue;
   }
+`;
+const StyleButton = styled.div`
+  width: 400px;
+  display: flex;
+  justify-content: center;
 `;
 export default ExaminationPackage;

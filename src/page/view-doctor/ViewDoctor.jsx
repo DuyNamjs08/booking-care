@@ -107,7 +107,9 @@ function ViewDoctor(props) {
               Edit dịch vụ
             </Button>
           ) : (
-            ""
+            <Button className="mx-3" variant="contained" onClick={()=>setEdit(!edit)}>
+             Đóng
+            </Button>
           )}
           {!edit ? (
             <Container>

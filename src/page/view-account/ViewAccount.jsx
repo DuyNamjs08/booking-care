@@ -107,7 +107,11 @@ function ViewAccount(props) {
               Edit dịch vụ
             </Button>
           ) : (
-            ""
+            <StyleButton>
+              <Button variant="contained" onClick={() => setEdit(!edit)}>
+                Đóng
+              </Button>
+            </StyleButton>
           )}
           {!edit ? (
             <Container>
@@ -179,5 +183,10 @@ const StyleForm = styled.form`
   display: flex;
   flex-direction: column;
   padding: 60px 80px 60px;
+`;
+const StyleButton = styled.div`
+  width: 400px;
+  display: flex;
+  justify-content: center;
 `;
 export default ViewAccount;

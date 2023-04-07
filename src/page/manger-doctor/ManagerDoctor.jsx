@@ -69,7 +69,7 @@ function ManagerDoctor(props) {
           ...data,
         })
       ).then((res) => {
-        console.log(res)
+        console.log(res);
         if (!res.payload) {
           toast.warning("email đã tồn tại");
           setLoading(false);
@@ -113,10 +113,16 @@ function ManagerDoctor(props) {
           <Button className="my-3" variant="contained" onClick={handleClick}>
             Thêm tài khoản Bác sỹ
           </Button>
-        ) : //   <Button className="my-3" variant="contained" onClick={handleSubmit}>
-        //     submit
-        //   </Button>
-        null
+        ) : (
+          <StyleButton>
+            <Button
+              variant="contained"
+              onClick={() => setEdit(!edit)}
+            >
+              Đóng
+            </Button>
+          </StyleButton>
+        )
       ) : (
         ""
       )}
@@ -171,7 +177,7 @@ function ManagerDoctor(props) {
       ) : (
         ""
       )}
-      <CustomGrid data={data} handleDelete={handleDelete} path={'/quan-ly/'} />
+      <CustomGrid data={data} handleDelete={handleDelete} path={"/quan-ly/"} />
     </div>
   );
 }
@@ -181,6 +187,11 @@ const StyleForm = styled.form`
   display: flex;
   flex-direction: column;
   padding: 60px 80px 60px;
+`;
+const StyleButton = styled.div`
+  width: 400px;
+  display: flex;
+  justify-content: center;
 `;
 const StyleLink = styled.div`
   &:hover {

@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
+import { useDispatch } from "react-redux";
+import { getservice } from "../../redux/authSlice";
 
 const StyleLink = styled.div`
   a {
@@ -23,12 +25,15 @@ function Card({
   token,
   role = "3",
   hanldeDelete,
+  data,
 }) {
+  const dispatch = useDispatch();
   return (
     <div className="card" style={{ width: width }}>
       {link ? (
-        <Link to={token ? link : "/login"}>
+        <Link to={link}>
           <img
+            onClick={() => dispatch(getservice(data))}
             src={img}
             className="card-img-top"
             height={150}
@@ -52,7 +57,7 @@ function Card({
             <Link to={link}>
               <h5 className="card-title">{title}</h5>
             </Link>
-            {role === "1" || "2" ? (
+            {role === "1" || role === "1" ? (
               <Button
                 className="my-3"
                 variant="contained"

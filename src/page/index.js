@@ -12,12 +12,23 @@ import DepartMentTotal from './deapart-total/DepartMentTotal'
 import Bond from './Bond/Bond'
 import Account from './account/Account'
 import ViewAccount from './view-account/ViewAccount'
+// ==================================
 import ManagerDoctor from './manger-doctor/ManagerDoctor'
 import ViewDoctor from './view-doctor/ViewDoctor'
+// ==================================
+import PatientsTotal from './patients-total/PatientsTotal'
+import ManagerPatients from './manger-patients/ManagerPatients'
+import ViewPatients from './view-patients/ViewPatients'
+// ==================================
+import BillTotals from './bill-totall/BillTotals'
+import ManagerBills from './manger-bills/ManagerBills'
+import ViewBills from '../components/view-bills/ViewBills'
 
 
-export default { Department, Doctor, ExaminationPackage, 
+export default {
+    Department, Doctor, ExaminationPackage,
     HealthFacilities, Homepage, Support, Notfound,
-    Login , Register , DepartmentDetail , DepartMentTotal , Bond , Account , ViewAccount,
-    ManagerDoctor , ViewDoctor
- }
+    Login, Register, DepartmentDetail, DepartMentTotal, Bond, Account, ViewAccount,
+    ManagerDoctor, ViewDoctor, PatientsTotal, ManagerPatients,
+     ViewPatients, BillTotals, ManagerBills, ViewBills
+}  

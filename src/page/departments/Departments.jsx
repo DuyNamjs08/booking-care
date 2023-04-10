@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { FetchDataService } from "../../redux/authSlice";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { AddService, DeleteService } from "../../redux/authSlice";
+import { AddService, DeleteService, FetchService } from "../../redux/authSlice";
 import Loading from "../loading/Loading";
 
 const StyleGrid = styled.div`
@@ -40,7 +40,8 @@ function Departments(props) {
   const role = localStorage.getItem("role");
   const path = useLocation();
   const [search, setSearch] = useState("");
-  const [data, setData] = useState(dataDepartment);
+  const [data, setData] = useState([]);
+  const [dataDetail, setDataDetail] = useState([]);
   const token = localStorage.getItem("token");
   const [state, setState] = useState(token);
   const [edit, setEdit] = useState(false);
@@ -49,6 +50,7 @@ function Departments(props) {
   const [value, setValue] = useState("");
   const [active, setActive] = useState(false);
   const GetData = async (value) => {
+    setLoading(true);
     try {
       await dispatch(FetchDataService(value))
         .unwrap()
@@ -58,17 +60,26 @@ function Departments(props) {
           });
           setData(newData);
         });
+
+      await dispatch(FetchService(value))
+        .unwrap()
+        .then((res) => {
+          setDataDetail(res);
+        });
+
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       toast.error("có lỗi xảy ra ");
     }
   };
 
   useEffect(() => {
     window.scroll(0, 0);
-    if (token) {
-      GetData(token);
-      setState(token);
-    }
+    // if (token) {
+    GetData(token);
+    setState(token);
+    // }
   }, [token, active]);
   const handleClick = () => {
     setEdit(!edit);
@@ -123,9 +134,9 @@ function Departments(props) {
   };
 
   const handleChooseService = () => {
-    if (!state) {
-      toast.warning("Bạn cần đăng nhập để đăng kí dịch vụ của chúng tôi !");
-    }
+    // if (!state) {
+    //   toast.warning("Bạn cần đăng nhập để đăng kí dịch vụ của chúng tôi !");
+    // }
   };
   if (loading) {
     return <Loading />;
@@ -153,7 +164,7 @@ function Departments(props) {
   return (
     <div className="container">
       <BreadCrumbs getBreadCrumbs={getBreadCrumbs} />
-      <StyleSearch className="mt-4 mb-5">
+      {/* <StyleSearch className="mt-4 mb-5">
         <h5>Search</h5>
         <input
           type="text"
@@ -161,8 +172,8 @@ function Departments(props) {
           onChange={handleSearch}
           value={search}
         />
-      </StyleSearch>
-      {role === "1" || "2" ? (
+      </StyleSearch> */}
+      {role === "1" || role === "1" ? (
         !edit ? (
           <Button className="my-3" variant="contained" onClick={handleClick}>
             Thêm dịch vụ
@@ -188,19 +199,20 @@ function Departments(props) {
       ) : null}
       <StyleGrid>
         {data
-          ? data.map((item) => (
+          ? data.map((item, index) => (
               <div
                 onClick={handleChooseService}
                 key={item.id}
                 style={{ cursor: "pointer", margin: "20px 0" }}
               >
                 <Card
+                  data={dataDetail.length > 0 ? dataDetail[index] : "hello"}
                   img={item.img}
                   title={item.name}
                   width={240}
                   // link={item.path}
                   role={role}
-                  link={item._id}
+                  link={`${item._id}`}
                   token={state}
                   hanldeDelete={hanldeDelete}
                 />

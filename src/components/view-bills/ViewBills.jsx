@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { GetOneDoctor, UpdateOneDoctor } from "../../redux/authSlice";
-import Loading from "../loading/Loading";
+import { FetchBillsbyId, UpdateOnePatients } from "../../redux/authSlice";
+import Loading from "../../page/loading/Loading";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import TextField from "@mui/material/TextField";
 
-function ViewDoctor(props) {
+function ViewBills(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const path = useLocation();
@@ -24,8 +23,6 @@ function ViewDoctor(props) {
     email: "",
     address: "",
     phone: "",
-    position: "",
-    major: "",
     gender: "",
   });
   const [data, setData] = useState([]);
@@ -35,9 +32,7 @@ function ViewDoctor(props) {
     email: yup.string().email().required(),
     address: yup.string().required(),
     phone: yup.string().min(9).max(10).required(),
-    position: yup.string().min(3).max(32).required(),
     gender: yup.string().required(),
-    major: yup.string().required(),
   });
   const {
     register,
@@ -50,7 +45,7 @@ function ViewDoctor(props) {
   const getDataDetails = async (value) => {
     setLoading(true);
     try {
-      await dispatch(GetOneDoctor(value))
+      await dispatch(FetchBillsbyId(value))
         .unwrap()
         .then((res) => {
           console.log("resxXZBXbZBXbZBX", res);
@@ -61,8 +56,6 @@ function ViewDoctor(props) {
             email: res.email,
             address: res.address,
             phone: res.phone,
-            position: res.position,
-            major: res.major,
           });
           setLoading(false);
         });
@@ -85,7 +78,7 @@ function ViewDoctor(props) {
     setLoading(true);
     try {
       await dispatch(
-        UpdateOneDoctor({
+        UpdateOnePatients({
           url: path.pathname.split("/")[2],
           token,
           ...data,
@@ -94,13 +87,13 @@ function ViewDoctor(props) {
         if (!res.payload) {
           setLoading(false);
           toast.warning("email đã tồn tại");
-          navigate("/quan-ly");
+          navigate("/danh-sach-benh-nhan");
           return;
         }
         setLoading(false);
         setActive(!active);
         toast.success("update success !");
-        navigate("/quan-ly");
+        navigate("/danh-sach-benh-nhan");
       });
     } catch (error) {
       setLoading(false);
@@ -115,7 +108,7 @@ function ViewDoctor(props) {
     <div>
       {data.length > 0 ? (
         <>
-          {!edit ? (
+          {/* {!edit ? (
             <Button className="mx-3" variant="contained" onClick={handleClick}>
               Edit dịch vụ
             </Button>
@@ -127,17 +120,13 @@ function ViewDoctor(props) {
             >
               Đóng
             </Button>
-          )}
+          )} */}
           {!edit ? (
             <Container>
-             <h4>Tên bác sỹ: {data[0]?.fullname}</h4>
-              <h3>Email: {data[0]?.email}</h3>
-              <h3>SDT: {data[0]?.phone}</h3>
-              <h3>Vị trí: {data[0]?.position}</h3>
+              <h4>Tên hóa đơn: {data[0]?.name}</h4>
+              <h4>SDT: {data[0]?.totalprice}</h4>
+              <h5>Email: {data[0]?.description}</h5>
               <h5>Ngày tạo: {data[0]?.updatedAt}</h5>
-              <h5> {data[0]?.gender === 1 && "Giới tính: Nam"}</h5>
-              <h5> {data[0]?.gender === 2 && "Giới tính: Nữ"}</h5>
-              <h5> {data[0]?.gender === 3 && "Giới tính: Khác"}</h5>
             </Container>
           ) : (
             <StyleForm onSubmit={handleSubmit(onSubmitHandler)}>
@@ -185,18 +174,6 @@ function ViewDoctor(props) {
                 onChange={(e) => setValue({ ...value, phone: e.target.value })}
               />
               <p style={{ color: "red" }}>{errors.phone?.message}</p>
-              <label className="sr-only">Position</label>
-              <input
-                {...register("position")}
-                placeholder="Position"
-                type="text"
-                required
-                value={value?.position}
-                onChange={(e) =>
-                  setValue({ ...value, position: e.target.value })
-                }
-              />
-              <p style={{ color: "red" }}>{errors.position?.message}</p>
               <label className="sr-only">Giới tính</label>
               <select {...register("gender")}>
                 <option value="">Choose</option>
@@ -205,16 +182,6 @@ function ViewDoctor(props) {
                 <option value={3}>Khác</option>
               </select>
               <p style={{ color: "red" }}>{errors.gender?.message}</p>
-              <label className="sr-only">Khoa</label>
-              <input
-                {...register("major")}
-                placeholder="Khoa"
-                type="text"
-                required
-                value={value?.major}
-                onChange={(e) => setValue({ ...value, major: e.target.value })}
-              />
-              <p style={{ color: "red" }}>{errors.major?.message}</p>
               <button
                 className="btn btn-lg btn-primary btn-block"
                 type="submit"
@@ -244,4 +211,5 @@ const StyleForm = styled.form`
   flex-direction: column;
   padding: 60px 80px 60px;
 `;
-export default ViewDoctor;
+export default ViewBills;
+

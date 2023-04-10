@@ -8,7 +8,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 
 export default function MaterialUIPickers() {
-  const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
+  const [value, setValue] = React.useState(dayjs(Date.now()));
 
   const handleChange = (newValue) => {
     setValue(newValue);

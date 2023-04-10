@@ -137,12 +137,12 @@ function Footer(props) {
             </div>
             <div className="mb-3">
               <h6>Hỗ trợ khách hàng</h6>
-              <p className="m-0"> support@bookingcare.vn (7h -20h)</p>
+              <p className="m-0"> support@Med24h.vn (7h -20h)</p>
             </div>
           </StyleFooterItem1>
         </StyleFooter>
         <StyleFooter2 className="container">
-          <FiSmartphone /> Tải ứng dụng BookingCare cho điện thoại hoặc máy tính
+          <FiSmartphone /> Tải ứng dụng Med24h cho điện thoại hoặc máy tính
           bảng:{" "}
           <StyleLink className="ms-3 mx-3"> Android-Iphone/ipad-Khác</StyleLink>
           <StyleIcon>

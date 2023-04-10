@@ -8,15 +8,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import backgroundImg from "../../assets/Rectangle.svg";
+import lefttt from "../../assets/bac si.svg";
 
 const StyleContainer = styled.div`
   height: 100vh;
   display: flex;
   align-items: center;
   padding: 10px 20px;
+  background: url(${backgroundImg});
 `;
 const StyleOutLine = styled.div`
   flex: 3;
+  margin-left: 40px;
 `;
 const StyleForm = styled.form`
   flex: 1;
@@ -24,6 +28,8 @@ const StyleForm = styled.form`
   flex-direction: column;
   padding: 60px 80px 60px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  background: #fff;
+  border-radius: 10px;
 `;
 const StyleLink = styled.div`
   &:hover {
@@ -51,6 +57,7 @@ function Login(props) {
       console.log(res);
       if (!res.payload?.status) {
         localStorage.setItem("token", res?.payload?.accessToken);
+        localStorage.setItem("idUser", res?.payload?.user?._id);
         localStorage.setItem(
           "role",
           JSON.stringify(res?.payload?.user?.roleid)
@@ -66,7 +73,9 @@ function Login(props) {
 
   return (
     <StyleContainer>
-      <StyleOutLine>1</StyleOutLine>
+      <StyleOutLine>
+        <img src={lefttt} alt="" />
+      </StyleOutLine>
       <StyleForm onSubmit={handleSubmit(onSubmitHandler)}>
         <h1 className="h3 mb-3 font-weight-normal text-center">Sign in</h1>
         <label className="sr-only">Username</label>

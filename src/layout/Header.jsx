@@ -5,6 +5,10 @@ import styled from "styled-components";
 import { headerData } from "../constant";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import { Avatar } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import { useNavigate } from "react-router-dom";
 
 const StyleHeader = styled.div`
   height: 76px;
@@ -45,13 +49,24 @@ const StyleLink = styled.div`
   }
 `;
 function Header(props) {
-  // const role = localStorage.getItem("role")
-  // const [state , setState] = useState(role)
-  // useEffect(()=>{
-  //   if(role){
-  //     setState(role)
-  //   }
-  // },[role])
+  const [data, setData] = useState([]);
+  const role = localStorage.getItem("role");
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token && role === "1") {
+      setData(headerData);
+    } else if (token && role === "2") {
+      setData(headerData.filter((item) => item.role.includes("2")));
+    } else {
+      setData(headerData.filter((item) => item.role.includes("3")));
+    }
+  }, [role, token]);
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
 
   return (
     <StyleHeader className="container d-flex gap-3">
@@ -61,7 +76,7 @@ function Header(props) {
         </Link>
       </div>
       <div className="d-flex gap-3 align-items-center">
-        {headerData.map((item) => {
+        {data.map((item) => {
           if (true) {
             return (
               <StyleLink key={item.id} className="link">
@@ -87,7 +102,15 @@ function Header(props) {
       <div className="d-flex align-items-center gap-1">
         <StyleSupport className="mb-0 link">
           <StyleLink>
-            <Link to="/login">Đăng nhập</Link>
+            {token ? (
+              <Tooltip title="Logout" onClick={handleLogout}>
+                <IconButton>
+                  <Avatar>H</Avatar>
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Link to="/login">Đăng nhập</Link>
+            )}
           </StyleLink>
         </StyleSupport>
       </div>

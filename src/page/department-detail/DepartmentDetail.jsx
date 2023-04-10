@@ -11,10 +11,17 @@ import Avatar from "@mui/material/Avatar";
 import BasicSelect from "../../components/selectmui/SelectMui";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { UpdateOneServiceDetail } from "../../redux/authSlice";
+import {
+  UpdateOneServiceDetail,
+  AddPatientService,
+} from "../../redux/authSlice";
 import Loading from "../loading/Loading";
+import { useSelector } from "react-redux";
 
 function DepartmentDetail(props) {
+  const dataDetail = useSelector((state) => state.authReducer.service);
+  const idUser = localStorage.getItem("idUser");
+  console.log("idUser>>???", idUser);
   const role = localStorage.getItem("role");
   const [loading, setLoading] = useState(false);
   const [state, setState] = useState(false);
@@ -23,7 +30,12 @@ function DepartmentDetail(props) {
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   const [edit, setEdit] = useState(false);
+  const [edit1, setEdit1] = useState(false);
   const [value, setValue] = useState("");
+  const [value1, setValue1] = useState({
+    name: "",
+    totalPrice: "",
+  });
   const inputRef = useRef(null);
   const [active, setActive] = useState(false);
   // console.log("path", path.pathname.split("/")[2]);
@@ -41,9 +53,9 @@ function DepartmentDetail(props) {
     }
   };
   useEffect(() => {
-    if (token) {
-      getDataDetails({ token, url: path.pathname.split("/")[2] });
-    }
+    // if (token) {
+    getDataDetails({ token, url: path.pathname.split("/")[2] });
+    // }
   }, [token, active]);
 
   const getChildBreadCrumbs = () => {
@@ -91,6 +103,38 @@ function DepartmentDetail(props) {
   const setTextInputRef = (element) => {
     inputRef.current = element;
   };
+  const handleEditDetail = () => {
+    setEdit1(!edit1);
+    // console.log("{ ...value1, ...dataDetail }", { ...value1, ...dataDetail });
+    setValue1({ ...value1, ...dataDetail });
+  };
+  const handleSubmitEditDetails = async () => {
+    setEdit1(!edit1);
+    console.log("value1", value1);
+  };
+  const RegiterService = async () => {
+    if (!token) {
+      return toast.warning("bạn cần đăng nhập tài khoản để đăng kí dịch vụ ");
+    }
+    try {
+      await dispatch(
+        AddPatientService({
+          url: dataDetail?._id,
+          idUser: idUser,
+          token,
+        })
+      ).then((res) => {
+        setLoading(false);
+        setActive(!active);
+        toast.success("đặt lịch khám thành công !");
+      });
+    } catch (error) {
+      setLoading(false);
+      setActive(!active);
+      toast.error("đặt lịch khám thất bại !");
+    }
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -103,7 +147,7 @@ function DepartmentDetail(props) {
     <div style={{ background: "#ccc", padding: "20px 0" }}>
       <Container className="container">
         <div>
-          {role === "1" || "2" ? (
+          {role && (role === "1" || role === "2") ? (
             !edit ? (
               <Button
                 className="my-3"
@@ -203,39 +247,6 @@ function DepartmentDetail(props) {
             </div>
             <div className="item1right">
               <h5>
-                <a href="#">Bác sĩ Chuyên khoa II Nguyễn Thị Kim Loan</a>
-              </h5>
-              <p>
-                Nguyên Trưởng khoa Cơ xương khớp, Bệnh viện E Hà Nội Được phong
-                tặng Danh hiệu Thầy thuốc Ưu tú Bác sĩ khám cho người bệnh từ 16
-                tuổi trở lên
-              </p>
-              <p>
-                <HiOutlineMapPin /> Hà Nội
-              </p>
-            </div>
-          </div>
-          <div className="item2">
-            <BasicSelect />
-            <Button variant="contained">Đặt lịch khám</Button>
-            <p>
-              ĐỊA CHỈ KHÁM Hệ thống Y tế Thu Cúc cơ sở Thụy Khuê 286 Thụy Khuê,
-              quận Tây Hồ, Hà Nội
-            </p>
-            <h5>GIÁ KHÁM:150000</h5>
-            <h5>LOẠI BẢO HIỂM ÁP DỤNG</h5>
-          </div>
-        </div>
-        <div className="main">
-          <div className="item1">
-            <div className="item1left">
-              <Avatar>H</Avatar>
-              <div>
-                <a href="#">Xem thêm</a>
-              </div>
-            </div>
-            <div className="item1right">
-              <h5>
                 <a href="#">Bác sĩ Chuyên khoa II Nguyễn Thị Kim Xuyến</a>
               </h5>
               <p>
@@ -250,13 +261,56 @@ function DepartmentDetail(props) {
           </div>
           <div className="item2">
             <BasicSelect />
-            <Button variant="contained">Đặt lịch khám</Button>
+            <Button onClick={RegiterService} variant="contained">
+              Đặt lịch khám
+            </Button>
             <p>
               ĐỊA CHỈ KHÁM Hệ thống Y tế Thu Cúc cơ sở Thụy Khuê 286 Thụy Khuê,
               quận Tây Hồ, Hà Nội
             </p>
-            <h5>GIÁ KHÁM:150000</h5>
-            <h5>LOẠI BẢO HIỂM ÁP DỤNG</h5>
+            {!edit1 ? (
+              <>
+                <h5>{dataDetail?.name || 0}</h5>
+                <h5>GIÁ KHÁM:{dataDetail?.totalPrice || 0}</h5>
+                <h5>LOẠI BẢO HIỂM ÁP DỤNG</h5>
+              </>
+            ) : (
+              <>
+                <TextField
+                  id="outlined-basic"
+                  label="Edit Tên dịch vụ"
+                  variant="outlined"
+                  value={value1?.name}
+                  onChange={(e) =>
+                    setValue1({ ...value1, name: e.target.value })
+                  }
+                />
+                <TextField
+                  id="outlined-basic"
+                  label="Edit giá"
+                  variant="outlined"
+                  value={value1.totalPrice}
+                  onChange={(e) =>
+                    setValue1({ ...value1, totalPrice: e.target.value })
+                  }
+                />
+              </>
+            )}
+            {!edit1 ? (
+              role === "1" || role === "2" ? (
+                <Button onClick={handleEditDetail} variant="contained">
+                  Edit dịch vụ
+                </Button>
+              ) : (
+                ""
+              )
+            ) : role === "1" || role === "2" ? (
+              <Button onClick={handleSubmitEditDetails} variant="contained">
+                Submit
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </Container>

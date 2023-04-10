@@ -178,7 +178,7 @@ function Homepage(props) {
       </Container> */}
       <div className="container my-5">
         <Carousel
-          width={"21rem"}
+          width={"22rem"}
           data={dataBanner}
           iconCarousel={<FiChevronRight />}
           options={settings}
@@ -193,7 +193,7 @@ function Homepage(props) {
         </div>
         <div className="container">
           <Carousel
-            width={"15rem"}
+            width={"16rem"}
             data={dataCarousel1}
             iconCarousel={null}
             options={settings1}
@@ -225,7 +225,7 @@ function Homepage(props) {
         </div>
         <div className="container">
           <Carousel
-            width={"15rem"}
+            width={"16rem"}
             data={dataCarousel1}
             iconCarousel={null}
             options={settings1}
@@ -241,7 +241,7 @@ function Homepage(props) {
         </div>
         <div className="container">
           <Carousel
-            width={"15rem"}
+            width={"16rem"}
             data={dataCarousel1}
             iconCarousel={null}
             options={settings1}

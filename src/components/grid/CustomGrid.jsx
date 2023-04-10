@@ -3,17 +3,27 @@ import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 
-function CustomGrid({ data, handleDelete ,path }) {
+function CustomGrid({
+  data,
+  handleDelete,
+  path,
+  fullname = "username",
+  major,
+  gender,
+  billColums,
+}) {
   const columns = [
-    { field: "id", headerName: "ID", width: 90, align: "center" },
+    { index: 1, field: "id", headerName: "ID", width: 90, align: "center" },
     {
-      field: "username",
+      index: 2,
+      field: fullname,
       headerName: "Họ Tên",
       width: 150,
       editable: true,
       headerAlign: "center",
     },
     {
+      index: 3,
       field: "email",
       headerName: "Email",
       width: 160,
@@ -21,6 +31,7 @@ function CustomGrid({ data, handleDelete ,path }) {
       headerAlign: "center",
     },
     {
+      index: 4,
       field: "createdAt",
       headerName: "Ngày đăng kí",
       width: 160,
@@ -28,6 +39,7 @@ function CustomGrid({ data, handleDelete ,path }) {
       headerAlign: "center",
     },
     {
+      index: 100,
       field: "action",
       headerName: "Action",
       width: 300,
@@ -50,6 +62,35 @@ function CustomGrid({ data, handleDelete ,path }) {
       },
     },
   ];
+  const newCols = [
+    {
+      index: 5,
+      field: "major",
+      headerName: "Khoa",
+      width: 200,
+      editable: true,
+      headerAlign: "center",
+    },
+  ];
+  const newColsGender = [
+    {
+      index: 6,
+      field: "gender",
+      headerName: "Giới tính",
+      width: 80,
+      editable: true,
+      headerAlign: "center",
+      renderCell: (row) => {
+        return (
+          <div>
+            {row?.row?.gender === 1 && "Nam"}
+            {row?.row?.gender === 2 && "Nữ"}
+            {row?.row?.gender === 3 && "Khác"}
+          </div>
+        );
+      },
+    },
+  ];
   const [newRows, setNewRows] = useState([]);
   useEffect(() => {
     if (data.length > 0) {
@@ -60,11 +101,26 @@ function CustomGrid({ data, handleDelete ,path }) {
       setNewRows(arr);
     }
   }, [data]);
+  const handleRenderCols = () => {
+    if (gender && major) {
+      return columns
+        .concat(newCols)
+        .concat(newColsGender)
+        .sort((a, b) => a.index - b.index);
+    } else if (gender) {
+      return columns.concat(newColsGender).sort((a, b) => a.index - b.index);
+    } else if (major) {
+      return columns.concat(newCols).sort((a, b) => a.index - b.index);
+    } else {
+      return columns;
+    }
+  };
+
   return (
     <Box sx={{ height: 400, width: "100%" }}>
       <DataGrid
         rows={newRows.length > 0 ? newRows : []}
-        columns={columns}
+        columns={billColums ? billColums : handleRenderCols()}
         initialState={{
           pagination: {
             paginationModel: {

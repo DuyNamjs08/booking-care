@@ -6,13 +6,16 @@ import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { FetchRegister } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
+import backgroundImg from "../../assets/Rectangle.svg";
+import lefttt from "../../assets/bac si.svg";
 
 const StyleContainer = styled.div`
   height: 100vh;
   display: flex;
   align-items: center;
   padding: 10px 20px;
+  background: url(${backgroundImg});
 `;
 const StyleOutLine = styled.div`
   flex: 3;
@@ -23,6 +26,9 @@ const StyleForm = styled.form`
   flex-direction: column;
   padding: 60px 80px 60px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  background: #fff;
+  border-radius: 10px;
+  height: 100vh !important;
 `;
 const StyleLink = styled.div`
   &:hover {
@@ -50,24 +56,26 @@ function Register(props) {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmitHandler = async(data) => {
+  const onSubmitHandler = async (data) => {
     console.log({ data });
     await dispatch(FetchRegister(data)).then((res) => {
-      console.log(res)
+      console.log(res);
       if (res?.payload) {
-        toast.success('Đăng kí thành công')
+        toast.success("Đăng kí thành công");
         setTimeout(() => {
           navigate("/login");
         }, 300);
       } else {
-        toast.error('Đăng kí thất bại tài khoản đã tồn tại!')
+        toast.error("Đăng kí thất bại tài khoản đã tồn tại!");
       }
     });
     reset();
   };
   return (
     <StyleContainer>
-      <StyleOutLine>1</StyleOutLine>
+      <StyleOutLine>
+        <img src={lefttt} alt="" />
+      </StyleOutLine>
       <StyleForm onSubmit={handleSubmit(onSubmitHandler)}>
         <h1 className="h3 mb-3 font-weight-normal text-center"> Sign up</h1>
         <label className="sr-only">Username</label>
@@ -85,7 +93,7 @@ function Register(props) {
           type="number"
           required
         />
-         <p style={{ color: "red" }}>{errors.phone?.message}</p>
+        <p style={{ color: "red" }}>{errors.phone?.message}</p>
         <label className="sr-only">Email</label>
         <input
           {...register("email")}

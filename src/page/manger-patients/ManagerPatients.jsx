@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import CustomGrid from "../../components/grid/CustomGrid";
-import { GetDoctors, AddDoctor, DeleteDoctor } from "../../redux/authSlice";
+import {
+  GetPatients,
+  AddPatients,
+  DeletePatients,
+} from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -11,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-function ManagerDoctor(props) {
+function ManagerPatients(props) {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const role = localStorage.getItem("role");
@@ -25,9 +29,7 @@ function ManagerDoctor(props) {
     email: yup.string().email().required(),
     address: yup.string().required(),
     phone: yup.string().min(9).max(10).required(),
-    position: yup.string().min(3).max(32).required(),
     gender: yup.string().required(),
-    major: yup.string().required(),
   });
   const {
     register,
@@ -40,7 +42,7 @@ function ManagerDoctor(props) {
   const GetData = async (value) => {
     setLoading(true);
     try {
-      await dispatch(GetDoctors(value))
+      await dispatch(GetPatients(value))
         .unwrap()
         .then((res) => {
           //   console.log("ress..////", res);
@@ -66,7 +68,7 @@ function ManagerDoctor(props) {
     setLoading(true);
     try {
       await dispatch(
-        AddDoctor({
+        AddPatients({
           token,
           ...data,
         })
@@ -90,7 +92,7 @@ function ManagerDoctor(props) {
     setLoading(true);
     try {
       await dispatch(
-        DeleteDoctor({
+        DeletePatients({
           token,
           url,
         })
@@ -109,11 +111,11 @@ function ManagerDoctor(props) {
   }
   return (
     <div className="container">
-      <h4 className="my-4">Danh sách Bác sỹ</h4>
+      <h4 className="my-4">Danh sách bệnh nhân</h4>
       {role === "1" || "2" ? (
         !edit ? (
           <Button className="my-3" variant="contained" onClick={handleClick}>
-            Thêm tài khoản Bác sỹ
+            Thêm tài khoản bệnh nhân
           </Button>
         ) : (
           <StyleButton>
@@ -128,68 +130,46 @@ function ManagerDoctor(props) {
       {edit ? (
         <div>
           <StyleForm onSubmit={handleSubmit(onSubmitHandler)}>
-            <div className="main-content">
-              <div className="left">
-                <label className="sr-only">Full Name</label>
-                <input
-                  {...register("fullname")}
-                  placeholder="Full name"
-                  type="text"
-                  required
-                />
-                <p style={{ color: "red" }}>{errors.fullname?.message}</p>
-                <label className="sr-only">Email</label>
-                <input
-                  {...register("email")}
-                  placeholder="Email"
-                  type="text"
-                  required
-                />
-                <p style={{ color: "red" }}>{errors.email?.message}</p>
-                <label className="sr-only">Address</label>
-                <input
-                  {...register("address")}
-                  placeholder="Address"
-                  type="text"
-                  required
-                />
-                <p style={{ color: "red" }}>{errors.address?.message}</p>
-                <label className="sr-only">Phone</label>
-                <input
-                  {...register("phone")}
-                  placeholder="Phone"
-                  type="text"
-                  required
-                />
-                <p style={{ color: "red" }}>{errors.phone?.message}</p>
-              </div>
-              <div className="right">
-                <label className="sr-only">Vị trí</label>
-                <input
-                  {...register("position")}
-                  placeholder="Position"
-                  type="text"
-                  required
-                />
-                <p style={{ color: "red" }}>{errors.position?.message}</p>
-                <label className="sr-only">Giới tính</label>
-                <select {...register("gender")}>
-                  <option value="">Choose</option>
-                  <option value={1}>Nam</option>
-                  <option value={2}>Nữ</option>
-                  <option value={3}>Khác</option>
-                </select>
-                <p style={{ color: "red" }}>{errors.gender?.message}</p>
-                <label className="sr-only">Khoa</label>
-                <input
-                  {...register("major")}
-                  placeholder="Khoa"
-                  type="text"
-                  required
-                />
-                <p style={{ color: "red" }}>{errors.major?.message}</p>
-              </div>
-            </div>
+            <label className="sr-only">Full Name</label>
+            <input
+              {...register("fullname")}
+              placeholder="Full name"
+              type="text"
+              required
+            />
+            <p style={{ color: "red" }}>{errors.fullname?.message}</p>
+            <label className="sr-only">Email</label>
+            <input
+              {...register("email")}
+              placeholder="Email"
+              type="text"
+              required
+            />
+            <p style={{ color: "red" }}>{errors.email?.message}</p>
+            <label className="sr-only">Address</label>
+            <input
+              {...register("address")}
+              placeholder="Address"
+              type="text"
+              required
+            />
+            <p style={{ color: "red" }}>{errors.address?.message}</p>
+            <label className="sr-only">Phone</label>
+            <input
+              {...register("phone")}
+              placeholder="Phone"
+              type="text"
+              required
+            />
+            <p style={{ color: "red" }}>{errors.phone?.message}</p>
+            <label className="sr-only">Giới tính</label>
+            <select {...register("gender")}>
+              <option value="">Choose</option>
+              <option value={1}>Nam</option>
+              <option value={2}>Nữ</option>
+              <option value={3}>Khác</option>
+            </select>
+            <p style={{ color: "red" }}>{errors.gender?.message}</p>
             <button className="btn btn-lg btn-primary btn-block" type="submit">
               Submit
             </button>
@@ -202,33 +182,18 @@ function ManagerDoctor(props) {
         fullname={"fullname"}
         data={data}
         handleDelete={handleDelete}
-        path={"/quan-ly/"}
-        major={true}
+        path={"/danh-sach-benh-nhan/"}
         gender={true}
       />
     </div>
   );
 }
 const StyleForm = styled.form`
-  width: 500px;
+  width: 400px;
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 60px 80px 60px;
-  .main-content {
-    display: flex;
-    gap: 10px;
-  }
-  .left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  .right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
 `;
 const StyleButton = styled.div`
   width: 400px;
@@ -240,4 +205,4 @@ const StyleLink = styled.div`
     color: blue;
   }
 `;
-export default ManagerDoctor;
+export default ManagerPatients;

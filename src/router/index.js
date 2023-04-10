@@ -29,8 +29,30 @@ const RouterWeb = [
             },
         ],
     },
-    { id: 3, path: LICH_SU, role: ['1', '2', '3'], component: <Pages.HealthFacilities /> },
-    { id: 4, path: DANH_SACH_BENH_NHAN, role: ['1', '2'], component: <Pages.Doctor /> },
+    {
+        id: 3, path: LICH_SU, role: ['1', '2', '3'], component: <Pages.BillTotals />, child: [
+            {
+                path: '',
+                component: <Pages.ManagerBills />,
+            },
+            {
+                path: ':id',
+                component: <Pages.ViewBills />,
+            },
+        ],
+    },
+    {
+        id: 4, path: DANH_SACH_BENH_NHAN, role: ['1', '2'], component: <Pages.PatientsTotal />, child: [
+            {
+                path: '',
+                component: <Pages.ManagerPatients />,
+            },
+            {
+                path: ':id',
+                component: <Pages.ViewPatients />,
+            },
+        ],
+    },
     {
         id: 5, path: QUAN_LY, role: ['1', '2'], component: <Pages.Doctor />,
         child: [

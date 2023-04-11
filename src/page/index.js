@@ -23,6 +23,7 @@ import ViewPatients from './view-patients/ViewPatients'
 import BillTotals from './bill-totall/BillTotals'
 import ManagerBills from './manger-bills/ManagerBills'
 import ViewBills from '../components/view-bills/ViewBills'
+import Pamacy from '../components/pramacy/Pamacy'
 
 
 export default {
@@ -30,5 +31,5 @@ export default {
     HealthFacilities, Homepage, Support, Notfound,
     Login, Register, DepartmentDetail, DepartMentTotal, Bond, Account, ViewAccount,
     ManagerDoctor, ViewDoctor, PatientsTotal, ManagerPatients,
-     ViewPatients, BillTotals, ManagerBills, ViewBills
+     ViewPatients, BillTotals, ManagerBills, ViewBills,Pamacy
 }  

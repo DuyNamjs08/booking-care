@@ -77,6 +77,7 @@ function ManagerDoctor(props) {
           setLoading(false);
           return;
         }
+        toast.success("tạo tk");
         setLoading(false);
         setActive(!active);
       });

@@ -56,7 +56,7 @@ function Header(props) {
 
   useEffect(() => {
     if (token && role === "1") {
-      setData(headerData);
+      setData(headerData.filter((item) => item.role.includes("1")));
     } else if (token && role === "2") {
       setData(headerData.filter((item) => item.role.includes("2")));
     } else {

@@ -260,7 +260,7 @@ function DepartmentDetail(props) {
             </div>
           </div>
           <div className="item2">
-            <BasicSelect />
+            <BasicSelect value={value} setValue={setValue} label="Chọn ngày khám" />
             <Button onClick={RegiterService} variant="contained">
               Đặt lịch khám
             </Button>

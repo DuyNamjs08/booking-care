@@ -6,6 +6,7 @@ const DANH_SACH_BENH_NHAN = "/danh-sach-benh-nhan"
 const QUAN_LY = "/quan-ly"
 const QUAN_LY_TK = "/tai-khoan"
 const BENH_NHAN = "/benh-nhan"
+const DON_THUOC = "/don-thuoc"
 
 
 
@@ -80,6 +81,7 @@ const RouterWeb = [
         ],
     },
     { id: 7, role: ['1', '2'], path: BENH_NHAN, component: <Pages.Support /> },
+    { id: 8, path: DON_THUOC, role: ['3'], component: <Pages.Pamacy /> },
 ]
 
 export default RouterWeb

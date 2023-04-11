@@ -10,6 +10,7 @@ import {
   GetDoctors,
   AddBills,
   DeleteBills,
+  ExportBills,
 } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -20,6 +21,11 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { saveAs } from "file-saver";
+import dayjs, { Dayjs } from "dayjs";
+import BasicSelect from "../../components/selectmui/SelectMui";
+import { format } from 'date-fns';
+
 
 function ManagerBills(props) {
   const idUser = localStorage.getItem("idUser");
@@ -35,6 +41,8 @@ function ManagerBills(props) {
   const [active, setActive] = useState(false);
   const [dataDoctor, setDataDoctor] = useState([]);
   const [dataPatientId, setDataPatientId] = useState([]);
+  const [value, setValue] = React.useState("");
+  const [value1, setValue1] = React.useState("");
 
   const schema = yup.object().shape({
     name: yup.string().required(),
@@ -208,12 +216,38 @@ function ManagerBills(props) {
       },
     },
   ];
+
+  const handleDownloadExcel = async () => {
+    if(!value && !value1){
+      return toast.error('vui lòng chọn ngày !')
+    }
+    
+    const date = {todate:format(value, 'yyyy-dd-MM') , fromdate:format(value1, 'yyyy-dd-MM')}
+    console.log('date>>??' , date)
+    try {
+      await dispatch(
+        ExportBills({
+          token,date
+        })
+      ).then((response) => {
+        const href = URL.createObjectURL(response.payload);
+        const link = document.createElement("a");
+        console.log(href);
+        link.href = href;
+        link.setAttribute("download", "dataExcel.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(href);
+      });
+    } catch (error) {}
+  };
   if (loading) {
     return <Loading />;
   }
   return (
     <div className="container">
-      {role === "1" || "2" ? (
+      {((role === "1") ||(role === "1")) ? (
         !edit ? (
           <Button className="my-3" variant="contained" onClick={handleClick}>
             Thêm hóa đơn
@@ -225,6 +259,19 @@ function ManagerBills(props) {
             </Button>
           </StyleButton>
         )
+      ) : (
+        ""
+      )}
+      {((role === "1") ||(role === "1"))? (
+        <div>
+          <div className="d-flex mb-3" style={{ gap: "10px" }}>
+            <BasicSelect name='todate' value={value} setValue={setValue} label="Từ ngày" />
+            <BasicSelect name='fromdate' value={value1} setValue={setValue1} label="Tới ngày" />
+          </div>
+          <Button variant="contained" onClick={handleDownloadExcel}>
+            Xuất file Excel
+          </Button>
+        </div>
       ) : (
         ""
       )}

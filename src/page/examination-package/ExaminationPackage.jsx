@@ -68,10 +68,12 @@ function ExaminationPackage(props) {
       ).then((res) => {
         if (!res.payload) {
           toast.warning("email đã tồn tại");
+          setLoading(false);
           return;
         }
         setLoading(false);
         setActive(!active);
+        toast.success("tạo tk");
       });
     } catch (error) {
       setLoading(false);

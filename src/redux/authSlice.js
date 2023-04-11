@@ -381,7 +381,46 @@ export const DeleteBills = createAsyncThunk('delete/patients', async (payload) =
     console.log("respone", response)
     return response.data
 })
+export const ExportBills = createAsyncThunk('delete/patients', async (payload) => {
+    console.log("payload", payload.token);
+    const url = API_BILLS + `/exportexcel`
+    const data = {
+        "fromDate": payload.date.todate,
+        "toDate": payload.date.fromdate
+    }
+    const response = await axios.post(url, data, {
+        headers: {
+            "Content-Type": "application/json",
+            x_authorization: payload.token
+        },
+        responseType: 'blob',
+    });
+    // const response = await axios({
+    //     url,
+    //     method: 'GET',
+    //     responseType: 'blob',
+    //     data,
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         x_authorization: payload.token
+    //     }
 
+
+    // });
+    console.log("respone", response)
+    return response.data
+})
+// ================================================
+export const FetchPamacy = createAsyncThunk('fetch/service', async (payload) => {
+    const response = await axios.get(API_PATIENTS_SERVICE + `/getpatientservice/${payload.url}`, {
+        headers: {
+            "Content-Type": "application/json",
+            "x_authorization": payload.token
+        }
+    })
+    console.log("respone", response)
+    return response.data
+})
 const authSlice = createSlice({
     name: 'auth',
     initialState: {

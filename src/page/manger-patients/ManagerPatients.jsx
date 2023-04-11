@@ -81,6 +81,7 @@ function ManagerPatients(props) {
         }
         setLoading(false);
         setActive(!active);
+        toast.success("tạo tk");
       });
     } catch (error) {
       setLoading(false);

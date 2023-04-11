@@ -30,7 +30,8 @@ import dashboard4 from '../assets/dashboard/4.png'
 import dashboard5 from '../assets/dashboard/5.png'
 export const headerData = [
     { id: 1, title: " Dịch vụ", text: 'Tìm bác sĩ theo chuyên khoa', path: '/dich-vu', role: ['1', '2', '3'] },
-    { id: 2, title: "Lịch sử", text: 'Danh sách đơn thuốc', path: '/lich-su', role: ['1', '2', '3'] },
+    { id: 2, title: "Lịch sử", text: 'Danh sách ', path: '/lich-su', role: ['1', '2', '3'] },
+    { id: 2, title: "Đơn thuốc", text: 'Đơn thuốc', path: '/don-thuoc', role: ["3"] },
     { id: 3, title: "Danh sách bệnh nhân", text: 'Chọn bác sĩ giỏi', path: '/danh-sach-benh-nhan', role: ['1', "2"] },
     { id: 4, title: "Quản lý", text: 'Tổng quát', path: '/quan-ly', role: ['1',] },
     { id: 5, title: "Tài khoản", text: 'Danh sách tài khoản', path: '/tai-khoan', role: ['1',] },
